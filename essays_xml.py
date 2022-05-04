@@ -14,7 +14,9 @@ root = tree.getroot()
 for item in root.iter('item'):
     if item.find('description') is None:
         html_tree = etree.parse(item[0].text, etree.HTMLParser())
-        des = etree.tostring(html_tree.xpath("//font[@size=2]")[0])
+        for x in html_tree.xpath("//font"):
+            x.attrib.clear()
+        des = etree.tostring(html_tree.xpath("//font")[0])
         item.append(ET.Element('description'))
         item[2].text = des.decode()
 tree.write(local_rss)
